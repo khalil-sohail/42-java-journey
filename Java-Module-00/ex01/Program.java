@@ -5,7 +5,9 @@ public class Program {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+        System.out.print("-> ");
         int nbr = scanner.nextInt();
+        
         if (nbr <= 1) {
             System.err.println("IllegalArgument");
             System.exit(-1);
@@ -16,23 +18,43 @@ public class Program {
     }
 
     public static boolean isPrime(int n) {
-        iteration = 1;
-        if (n <= 1) {
-            return false;
-        } if (n <= 3) {
+        iteration = 0;
+
+        iteration++;
+        if (n <= 3) {
             return true;
-        } if (n % 2 == 0 || n % 3 == 0) {
+        }
+
+        iteration++;
+        if (n % 2 == 0) {
+            return false;
+        }
+
+        iteration++;
+        if (n % 3 == 0) {
             return false;
         }
 
         int i = 5;
-        while (i * i <= n) {
-            if (n % i == 0 || n % (i + 2) == 0) {
+        while (true) {
+            iteration++;
+            if (i * i > n) {
+                break;
+            }
+
+            iteration++;
+            if (n % i == 0) {
                 return false;
             }
+
+            iteration++;
+            if (n % (i + 2) == 0) {
+                return false;
+            }
+
             i += 6;
-            iteration += 1;
         }
+
         return true;
     }
 }
