@@ -6,8 +6,8 @@ public class Program {
         Scanner scanner = new Scanner(System.in);
         System.out.print("-> ");
         String input = scanner.nextLine();
+        
         char[] lineChars = input.toCharArray();
-
         int[] frequency = new int[65536];
         int[][] topValuesIndexes = new int[2][10]; // 0 index values | 1 values
 
@@ -16,7 +16,6 @@ public class Program {
             frequency[lineChars[i]]++;
         }
 
-        // To Do: Scan for the highest frequency of a character in the input string.
         for (int i = 0; i < frequency.length; i++) {
             if (frequency[i] > 0) {
                 if (frequency[i] > topValuesIndexes[1][9]) {
@@ -27,7 +26,6 @@ public class Program {
             }
         }
 
-        // To Do: Print the letters and their frequency in a Histogram-like format.
         System.out.println();
         for (int i = 0; i < topValuesIndexes[0].length; i++) {
             if (topValuesIndexes[1][i] > 0) {
