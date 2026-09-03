@@ -1,15 +1,15 @@
 import java.util.Scanner;
 
 public class Program {
-    
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        String input = scanner.nextLine();
-        
-        char[] lineChars = input.toCharArray();
-        int[] frequency = new int[65536];
-        int[][] topValuesIndexes = new int[2][10]; // 0 index values | 1 values
+    public static Scanner   scanner = new Scanner(System.in);
+    public static int[][]   topValuesIndexes = new int[2][10]; // 0 index values | 1 values
+    public static int[]     frequency = new int[65536];
+    public static int[]     topScaledValues = new int[10];
+    public static int index = 0;
 
+    public static void main(String[] args) {
+        String input = scanner.nextLine();
+        char[]  lineChars = input.toCharArray();
 
         for (int i = 0; i < lineChars.length; i++) {
             frequency[lineChars[i]]++;
@@ -25,24 +25,61 @@ public class Program {
             }
         }
 
-        System.out.println();
-        for (int i = 0; i < topValuesIndexes[0].length; i++) {
-            if (topValuesIndexes[1][i] > 0) {
-                System.out.print((char)topValuesIndexes[0][i] + " | ");
-                
-                int rep = scaleNumber(topValuesIndexes[1][i], topValuesIndexes[1][0], 0);
-                for (int j = 0; j < rep; j++) {
-                    System.out.print("# ");
-                }
-
-                printEquals(' ', 20 - rep*2);
-                System.out.print(topValuesIndexes[1][i]);
-                System.out.println();
-            }
-        }
-
+        display();
         scanner.close();
 		return;
+    }
+
+    public static void display() {
+        for (int i = 0; i < topValuesIndexes[0].length; i++) {
+            if (topValuesIndexes[1][i] == 0) break;
+
+            topScaledValues[i] = scaleNumber(
+                topValuesIndexes[1][i],
+                topValuesIndexes[1][0],
+                0
+            );
+        }
+
+        printHistogramValues(true, 10);
+        for (int row = 10; row > 0; row--) {
+            for (int i = 0; i < topValuesIndexes[0].length; i++) {
+                if (topValuesIndexes[1][i] == 0) break;
+
+                int scaled = topScaledValues[i];
+                if (scaled >= row) {
+                    System.out.print("# ");
+                }
+            }
+
+            printHistogramValues(false, row - 1);
+            System.out.println();
+        }
+
+        for (int i = 0; i < topValuesIndexes[0].length; i++) {
+            if (topValuesIndexes[1][i] == 0) break;
+
+            System.out.print((char)topValuesIndexes[0][i]);
+            if (i < topValuesIndexes[0].length - 1
+                    && topValuesIndexes[1][i + 1] != 0) {
+                System.out.print(" ");
+            }
+        }
+        
+        System.out.println();
+    }
+
+    public static void printHistogramValues(boolean printNewLine, int row) {
+
+        while (index < topValuesIndexes[1].length
+                && topScaledValues[index] == row
+                && topValuesIndexes[1][index] != 0) {
+
+            System.out.print(topValuesIndexes[1][index++]);            
+            if (index < topValuesIndexes[1].length
+                    && topScaledValues[index] == row) System.out.print(" ");
+            else if (printNewLine) System.out.println();
+        }
     }
 
     public static int scaleNumber(int number, int max, int min) {
