@@ -9,24 +9,10 @@ public class Program {
         Scanner scanner = new Scanner(System.in);
 
         parseStudentList(scanner);
-        if (studentList[0] == null) {
-            System.out.println("No students in the list. Exiting program.");
-            exitProgram(scanner);
-        }
-
         parseTimeTable(scanner);
-        if (classList[0][0] == 0) {
-            System.out.println("No classes in the timetable. Exiting program.");
-            exitProgram(scanner);
-        }
-
         parseAttendanceRecord(scanner);
-        if (attendanceList[0][0] == 0) {
-            System.out.println("No attendance records. Exiting program.");
-            exitProgram(scanner);
-        }
-
         displayAttendance();
+
         scanner.close();
         return;
     }
@@ -76,6 +62,17 @@ public class Program {
             if (dayNumber == -1) {
                 System.out.println("Error: Day must be one of `MO`, `TU`, `WE`, `TH`, `FR`, `SA`, `SU`.");
                 exitProgram(scanner);
+            }
+
+            if (i > 0) {
+                int previousTime = classList[i - 1][0];
+                int previousDay = classList[i - 1][1];
+
+                if (dayNumber < previousDay ||
+                    (dayNumber == previousDay && time <= previousTime)) {
+                    System.out.println("IllegalArgument");
+                    exitProgram(scanner);
+                }
             }
 
             classList[i][0] = time;
@@ -129,9 +126,7 @@ public class Program {
     public static void displayAttendance() {
         int dayNbr = 2; // TU
 
-        System.out.print(" ");
         for (int date = 1; date <= 30; date++) {
-
             for (int time = 1; time <= 6; time++) {
                 for (int i = 0; i < classList.length; i++) {
                     if (classList[i][0] == 0) {
@@ -159,7 +154,6 @@ public class Program {
         }
 
         System.out.println();
-
         for (int student = 0; student < studentList.length; student++) {
             if (studentList[student] == null) {
                 break;

@@ -44,7 +44,9 @@ public class Program {
         int week = 1;
         while (week < order) {
             int grade = (int)(storage % 10);
-            System.out.print("Week " + week + " ");
+            System.out.print("Week ");
+            System.out.print(week);
+            System.out.print(" ");
             printEquals('=', grade);
             System.out.println(">");
             storage /= 10;

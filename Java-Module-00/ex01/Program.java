@@ -21,8 +21,8 @@ public class Program {
 
         while (true) {
 
-            if (n % i == 0) return false;
             iteration++;
+            if (n % i == 0) return false;
             
             if (i * i > n) return true;
             i++;

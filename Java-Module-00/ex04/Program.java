@@ -48,7 +48,10 @@ public class Program {
 
                 int scaled = topScaledValues[i];
                 if (scaled >= row) {
-                    System.out.print("# ");
+                    if (i == 0 || (1 + i >= topValuesIndexes[0].length && topValuesIndexes[1][i + 1] != 0)) {
+                        System.out.print("#");
+                    }
+                    else System.out.print(" #");
                 }
             }
 
@@ -70,11 +73,13 @@ public class Program {
     }
 
     public static void printHistogramValues(boolean printNewLine, int row) {
+        int baseIndex = index;
 
         while (index < topValuesIndexes[1].length
-                && topScaledValues[index] == row
-                && topValuesIndexes[1][index] != 0) {
-
+            && topScaledValues[index] == row
+            && topValuesIndexes[1][index] != 0) {
+                
+            if (!printNewLine && index == baseIndex) System.out.print(" ");
             System.out.print(topValuesIndexes[1][index++]);            
             if (index < topValuesIndexes[1].length
                     && topScaledValues[index] == row) System.out.print(" ");
