@@ -7,9 +7,11 @@ public class Program {
     }
 
     public static int sumDigits(int n) {
-        if (n == 0)
-            return 0; // logic must be changed, no condition is allowed for this exercise.
-
-        return (n % 10) + sumDigits(n / 10);
+        return n / 100000
+            + (n / 10000) % 10
+            + (n / 1000) % 10
+            + (n / 100) % 10
+            + (n / 10) % 10
+            + n % 10;
     }
 }

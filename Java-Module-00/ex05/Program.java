@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class Program {
     public static String[] studentList = new String[10];
     public static int[][] classList = new int[10][2];
-    public static int[][] attendanceList = new int[100][4];
+    public static int[][] attendanceList = new int[505][4];
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
@@ -26,42 +26,43 @@ public class Program {
             exitProgram(scanner);
         }
 
-
-
-
         displayAttendance();
         scanner.close();
         return;
     }
 
-
-
-
-
     public static void parseStudentList(Scanner scanner) {
-        for (int i = 0; i < studentList.length; i++) {
-            System.out.print("-> ");
+        int i = 0;
+        while (true) {
             String input = scanner.nextLine();
 
             if (input.equals(".")) {
                 break;
+            } else if (i >= 10) {
+                System.out.println("Total classes per week cannot exceed 10.");
+                exitProgram(scanner);
             }
+
             if (NotValidName(input)) {
                 exitProgram(scanner);
             }
             
             studentList[i] = input;
+            i++;
         }
 
         return;
     }
     
     public static void parseTimeTable(Scanner scanner) {
-        for (int i = 0; i < classList.length; i++) {
-            System.out.print("-> ");
+        int i = 0;
+        while (true) {
             String input = scanner.next();
             if (input.equals(".")) {
                 break;
+            } else if (i >= 10) {
+                System.out.println("Maximum number of students in the timetable is also 10.");
+                exitProgram(scanner);
             }
 
             int time = getNumber(input);
@@ -79,6 +80,7 @@ public class Program {
 
             classList[i][0] = time;
             classList[i][1] = dayNumber;
+            i++;
         }
 
         return;
@@ -86,7 +88,6 @@ public class Program {
     
     public static void parseAttendanceRecord(Scanner scanner) {
         for (int i = 0; i < attendanceList.length; i++) {
-            System.out.print("-> ");
             String name = scanner.next();
             if (name.equals(".")) {
                 break;
@@ -128,10 +129,7 @@ public class Program {
     public static void displayAttendance() {
         int dayNbr = 2; // TU
 
-        for (int j = 0; j < 11; j++) {
-            System.out.print(" ");
-        }
-
+        System.out.print(" ");
         for (int date = 1; date <= 30; date++) {
 
             for (int time = 1; time <= 6; time++) {
@@ -149,18 +147,6 @@ public class Program {
                             dayName + " " +
                             date
                         );
-                        int length = 3 + 1 + dayName.length() + 1;
-
-                        if (date < 10) {
-                            length++;
-                        } else {
-                            length += 2;
-                        }
-
-                        for (int j = length; j < 10; j++) {
-                            System.out.print(" ");
-                        }
-
                         System.out.print("|");
                     }
                 }
@@ -219,11 +205,11 @@ public class Program {
                     }
 
                     if (status == 1) {
-                        System.out.print("     1     |");
+                        System.out.print("       1|");
                     } else if (status == -1) {
-                        System.out.print("    -1     |");
+                        System.out.print("      -1|");
                     } else {
-                        System.out.print("           |");
+                        System.out.print("        |");
                     }
                 }
 
@@ -256,20 +242,20 @@ public class Program {
     }
 
     public static boolean NotValidName(String name) {
-        if (name.length() == 0 || name.length() > 10){
+        if (name.length() == 0 || name.length() > 10) {
             System.out.println("Error: Name must be between `1` and `10` characters.");
             return true;
         }
 
-        for (int i = 0; i < name.length(); i++) {
-            if (name.charAt(i) == ' ') {
+        char[] chars = name.toCharArray();
+
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] == ' ') {
                 System.out.println("Error: Name cannot contain spaces.");
-                return true;
-            } else if (!Character.isLetter(name.charAt(i))) {
-                System.out.println("Error: Name must contain only letters.");
                 return true;
             }
         }
+
         return false;
     }
 
@@ -284,7 +270,7 @@ public class Program {
 
         return number;
     }
-
+    
     public static int getDayNumber(String day) {
         switch (day) {
             case "MO":
@@ -327,20 +313,3 @@ public class Program {
         }
     }
 }
-
-
-
-
-/*
-
-John
-Mike
-.
-2 MO
-4 WE
-.
-Mike 2 28 NOT_HERE
-John 4 9 HERE
-Mike 4 9 HERE
-
-*/

@@ -4,7 +4,6 @@ public class Program {
     
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("-> ");
         String input = scanner.nextLine();
         
         char[] lineChars = input.toCharArray();
@@ -30,11 +29,14 @@ public class Program {
         for (int i = 0; i < topValuesIndexes[0].length; i++) {
             if (topValuesIndexes[1][i] > 0) {
                 System.out.print((char)topValuesIndexes[0][i] + " | ");
+                
                 int rep = scaleNumber(topValuesIndexes[1][i], topValuesIndexes[1][0], 0);
                 for (int j = 0; j < rep; j++) {
                     System.out.print("# ");
                 }
-                System.out.print(" ".repeat(20 - rep*2) + topValuesIndexes[1][i]);
+
+                printEquals(' ', 20 - rep*2);
+                System.out.print(topValuesIndexes[1][i]);
                 System.out.println();
             }
         }
@@ -69,6 +71,12 @@ public class Program {
         }
         
         return numbers;
+    }
+
+    public static void printEquals(char c,int grade) {
+        for (int i = 0; i < grade; i++) {
+            System.out.print(c);
+        }
     }
 
 }

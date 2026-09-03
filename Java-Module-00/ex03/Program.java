@@ -5,11 +5,12 @@ public class Program {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         long storage = 0;
+        long  multiplier = 1;
         int order = 1;
-        int multiplier = 1;
+
+        
 
 		while (true) {
-            System.out.print("-> ");
             String word = scanner.next();
             if (word.equals("42")) {
                 break;
@@ -21,9 +22,7 @@ public class Program {
                 endProgram(true);
             }
 
-            
             int minGrade = 9;
-            System.out.print("-> ");
             for (int i = 0; i < 5; i++) {
                 int current = getNumber(scanner.next());
                 if (current < 1 || current > 9) {
@@ -34,7 +33,7 @@ public class Program {
                 }
             }
             
-            storage = storage + (long)(minGrade * multiplier);
+            storage = storage + (long) minGrade * multiplier;
             multiplier *= 10;
             order++;
             if (order > 18) {
@@ -45,7 +44,9 @@ public class Program {
         int week = 1;
         while (week < order) {
             int grade = (int)(storage % 10);
-            System.out.println("Week " + week + (week > 9 ? " " : " ") + "=".repeat(grade) + ">");
+            System.out.print("Week " + week + " ");
+            printEquals('=', grade);
+            System.out.println(">");
             storage /= 10;
             week++;
         }
@@ -55,20 +56,48 @@ public class Program {
     }
 
     public static int getNumber(String input) {
-        int current = 0;
-
-        if (input.equals("1")) current = 1;
-        else if (input.equals("2")) current = 2;
-        else if (input.equals("3")) current = 3;
-        else if (input.equals("4")) current = 4;
-        else if (input.equals("5")) current = 5;
-        else if (input.equals("6")) current = 6;
-        else if (input.equals("7")) current = 7;
-        else if (input.equals("8")) current = 8;
-        else if (input.equals("9")) current = 9;
-        else return -1;
-        
-        return current;
+        switch (input) {
+            case "1":
+                return 1;
+            case "2":
+                return 2;
+            case "3":
+                return 3;
+            case "4":
+                return 4;
+            case "5":
+                return 5;
+            case "6":
+                return 6;
+            case "7":
+                return 7;
+            case "8":
+                return 8;
+            case "9":
+                return 9;
+            case "10":
+                return 10;
+            case "11":
+                return 11;
+            case "12":
+                return 12;
+            case "13":
+                return 13;
+            case "14":
+                return 14;
+            case "15":
+                return 15;
+            case "16":
+                return 16;
+            case "17":
+                return 17;
+            case "18":
+                return 18;
+            default:
+                System.err.println("IllegalArgument");
+                System.exit(-1);
+                return -1;
+        }
     }
 
     public static void endProgram(boolean isError) {
@@ -77,6 +106,12 @@ public class Program {
             System.exit(-1);
         } else {
             System.exit(0);
+        }
+    }
+
+    public static void printEquals(char c,int grade) {
+        for (int i = 0; i < grade; i++) {
+            System.out.print(c);
         }
     }
 }
