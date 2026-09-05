@@ -1,7 +1,7 @@
 
 public class UserIdsGenerator {
     private static UserIdsGenerator instance;
-    private int lastId;
+    private int                     lastId;
 
     private UserIdsGenerator() {
         this.lastId = 0;
@@ -11,6 +11,7 @@ public class UserIdsGenerator {
         if (instance == null) {
             instance = new UserIdsGenerator();
         }
+
         return instance;
     }
 
