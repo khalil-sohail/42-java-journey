@@ -1,8 +1,8 @@
 
 public class Program {
     public static void main(String[] args) {
-        User user1 = new User("Alice", 1000);
-        User user2 = new User("Bob", 500);
+        User user1 = new User("Khalil", 1000);
+        User user2 = new User("Sohail", 500);
         User user3 = new User("Charlie", 250);
 
         System.out.println("--- User Autoincrement Test ---");

@@ -32,8 +32,8 @@ public class TransactionsLinkedList implements TransactionsList {
                     previous.setNext(current.getNext());
                 }
 
-                current.setNext(null);
                 size--;
+                current.setNext(null);
                 return;
             }
 
