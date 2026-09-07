@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class FileIO {
+public class Program {
     public static void main(String[] args) {
         String resultPath = "result.txt";
         String inputPath = "signatures.txt";
