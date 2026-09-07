@@ -85,5 +85,5 @@ Desktop.ini
 *.temp
 en.md
 *.sh
-*.txt
+result.txt
 test_files/
