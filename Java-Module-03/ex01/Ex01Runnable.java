@@ -1,10 +1,10 @@
 
-public class DisputeRunnable implements Runnable {
+public class Ex01Runnable implements Runnable {
     private final ArgumentOrchestrator  presenter;
     private final String                name;
     private final int                   count;
 
-    public DisputeRunnable(String name, int count, ArgumentOrchestrator presenter) {
+    public Ex01Runnable(String name, int count, ArgumentOrchestrator presenter) {
         this.presenter = presenter;
         this.count = count;
         this.name = name;

@@ -6,7 +6,7 @@ public class Program {
     public static void main(String[] args) {
 
         if (
-            args.length > 0 &&
+            args.length == 2 &&
             args[0].startsWith("--arraySize=") &&
             args[1].startsWith("--threadsCount=")
         ) {
@@ -25,7 +25,7 @@ public class Program {
             System.exit(1);
         }
 
-        DisputeRunnable[] runnables = new DisputeRunnable[threadsCount];
+        Ex02Runnable[] runnables = new Ex02Runnable[threadsCount];
         Thread[] threads = new Thread[threadsCount];
         int[] array = ArrayGenerator.generateArray(arraySize);
         long sequentialSum = ArrayGenerator.calculateSequentialSum(array);
@@ -36,7 +36,7 @@ public class Program {
             int start = i * chunkSize;
             int end = (i == threadsCount - 1) ? (arraySize - 1) : (start + chunkSize - 1);
             
-            runnables[i] = new DisputeRunnable(array, i, start, end);
+            runnables[i] = new Ex02Runnable(array, i, start, end);
             threads[i] = new Thread(runnables[i]);
             
             threads[i].start();

@@ -3,7 +3,7 @@ public class Program {
     public static void main(String[] args) {
         int count = -1;
 
-        if (args.length > 0 && args[0].startsWith("--count=")) {
+        if (args.length == 1 && args[0].startsWith("--count=")) {
             String countStr = args[0].substring("--count=".length());
 
             try {
@@ -14,8 +14,8 @@ public class Program {
             }
             
             try {
-                Thread hen = new Thread(new DisputeRunnable("Hen", count));
-                Thread egg = new Thread(new DisputeRunnable("Egg", count));
+                Thread hen = new Thread(new Ex00Runnable("Hen", count));
+                Thread egg = new Thread(new Ex00Runnable("Egg", count));
                 
                 hen.start();
                 egg.start();

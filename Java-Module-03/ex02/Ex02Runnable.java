@@ -1,5 +1,5 @@
 
-public class DisputeRunnable implements Runnable {
+public class Ex02Runnable implements Runnable {
     private final int[]                 array;
     private final int                   threadId;
     private final int                   start;
@@ -7,7 +7,7 @@ public class DisputeRunnable implements Runnable {
 
     private long sum = 0;
 
-    public DisputeRunnable(int[] array, int threadId, int start, int end) {
+    public Ex02Runnable(int[] array, int threadId, int start, int end) {
         this.array = array;
         this.threadId = threadId;
         this.start = start;

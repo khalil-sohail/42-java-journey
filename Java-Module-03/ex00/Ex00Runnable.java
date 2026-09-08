@@ -1,9 +1,9 @@
 
-public class DisputeRunnable implements Runnable {
+public class Ex00Runnable implements Runnable {
     private final String    name;
     private final int       count;
 
-    public DisputeRunnable(String name, int count) {
+    public Ex00Runnable(String name, int count) {
         this.name = name;
         this.count = count;
     }
