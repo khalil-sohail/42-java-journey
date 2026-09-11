@@ -24,12 +24,23 @@ public class Program {
 
             List<String> urls = readUrls("files_urls.txt");
             DownloadManager manager = new DownloadManager(urls);
+            List<Thread> threads = new ArrayList<>();
 
             for (int i = 0; i < threadsCount; i++) {
                 DownloadWorker worker = new DownloadWorker(manager);
                 Thread thread = new Thread(worker, "Thread-" + (i + 1));
+                threads.add(thread);
                 thread.start();
             }
+            
+            for (Thread thread : threads) {
+                try {
+                    thread.join();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+
         } else {
             System.err.println("Missing or invalid --threadsCount argument");
             System.exit(1);

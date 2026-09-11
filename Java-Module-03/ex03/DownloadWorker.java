@@ -4,7 +4,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.net.URI;
-import java.net.URL;
 
 public class DownloadWorker implements Runnable {
     private final DownloadManager manager;
