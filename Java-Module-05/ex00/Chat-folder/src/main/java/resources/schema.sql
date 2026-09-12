@@ -1,0 +1,26 @@
+
+CREATE TABLE users (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    login VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE chatrooms (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    owner_id BIGINT NOT NULL REFERENCES users(id)
+);
+
+CREATE TABLE messages (
+    id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    author_id BIGINT NOT NULL REFERENCES users(id),
+    room_id BIGINT NOT NULL REFERENCES chatrooms(id),
+    text TEXT NOT NULL,
+    date_time TIMESTAMP NOT NULL
+);
+
+CREATE TABLE users_chatrooms (
+    user_id BIGINT NOT NULL REFERENCES users(id),
+    room_id BIGINT NOT NULL REFERENCES chatrooms(id),
+    PRIMARY KEY (user_id, room_id)
+);
