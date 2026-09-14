@@ -40,7 +40,7 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
             JOIN chatrooms c
                 ON m.room_id = c.id
             WHERE m.id = ?
-            """;
+        """;
 
         try (Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(sql)) {

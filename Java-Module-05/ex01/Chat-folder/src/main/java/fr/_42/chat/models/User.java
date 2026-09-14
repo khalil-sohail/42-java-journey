@@ -53,8 +53,10 @@ public class User {
     @Override
     public String toString() {
         return "User{ " +
-                "id=`" + id +
-                "`, login=`" + login +
-                "` }";
+                "id=\"" + id +
+                "\", login=\"" + login +
+                "\", password=\"" + password +
+                "\", createdRooms=null, socializedRooms=null" +
+                "}";  
     }
 }

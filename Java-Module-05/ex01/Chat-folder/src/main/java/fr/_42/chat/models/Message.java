@@ -2,6 +2,8 @@ package fr._42.chat.models;
 
 import java.time.LocalDateTime;
 
+import java.time.format.DateTimeFormatter;
+
 public class Message {
     private Long id;
     private User author;
@@ -24,11 +26,15 @@ public class Message {
         this.dateTime = dateTime;
     }
 
-    public Long getId()                 { return id; }
-    public User getAuthor()             { return author; }
-    public Chatroom getRoom()           { return room; }
-    public String getText()             { return text; }
-    public LocalDateTime getDateTime()  { return dateTime; }
+    public Long     getId()         { return id; }
+    public User     getAuthor()     { return author; }
+    public Chatroom getRoom()       { return room; }
+    public String   getText()       { return text; }
+    public String   getDateTime()   {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd HH:mm");
+        
+        return dateTime.format(formatter);
+    }
 
     public void setId(Long id)                      { this.id = id; }
     public void setAuthor(User author)              { this.author = author; }

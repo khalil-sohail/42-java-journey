@@ -48,8 +48,9 @@ public class Chatroom {
     @Override
     public String toString() {
         return "Chatroom{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
+                "id=\"" + id +
+                "\", name=\"" + name +
+                "\", creator=null, messages=null" +
                 '}';
     }
 }
