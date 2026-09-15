@@ -20,7 +20,7 @@ public class Program {
 
         try (HikariDataSource dataSource = new HikariDataSource(config)) {
             MessagesRepository messagesRepository = new MessagesRepositoryJdbcImpl(dataSource);
-            Optional<Message> messageOptional = messagesRepository.findById(2L);
+            Optional<Message> messageOptional = messagesRepository.findById(1L);
 
             if (messageOptional.isEmpty()) {
                 System.out.println("Message not found");
@@ -31,7 +31,9 @@ public class Program {
             System.out.println("Before update:");
             System.out.println(message);
 
-            message.setText("Hi");
+            message.setAuthor(null);
+            message.setRoom(null);
+            message.setText(null);
             message.setDateTime(null);
             messagesRepository.update(message);
             Optional<Message> updatedMessageOptional = messagesRepository.findById(message.getId());
