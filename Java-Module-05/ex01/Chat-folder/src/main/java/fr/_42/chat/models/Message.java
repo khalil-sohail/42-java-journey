@@ -26,13 +26,17 @@ public class Message {
         this.dateTime = dateTime;
     }
 
-    public Long     getId()         { return id; }
-    public User     getAuthor()     { return author; }
-    public Chatroom getRoom()       { return room; }
-    public String   getText()       { return text; }
-    public String   getDateTime()   {
+    public Long             getId()             { return id; }
+    public User             getAuthor()         { return author; }
+    public Chatroom         getRoom()           { return room; }
+    public String           getText()           { return text; }
+    public LocalDateTime    getTrueDateTime()   { return dateTime; }
+    public String           getDateTime()       {
+        if (dateTime == null) {
+            return null;
+        }
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd HH:mm");
-        
         return dateTime.format(formatter);
     }
 

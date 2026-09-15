@@ -31,6 +31,14 @@ public class Message {
     public Chatroom      getRoom()          { return room; }
     public String        getText()          { return text; }
     public LocalDateTime getTrueDateTime()  { return dateTime; }
+    public String        getDateTime()      {
+        if (dateTime == null) {
+            return null;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy/MM/dd HH:mm");
+        return dateTime.format(formatter);
+    }
 
     public void setId(Long id)                      { this.id = id; }
     public void setAuthor(User author)              { this.author = author; }

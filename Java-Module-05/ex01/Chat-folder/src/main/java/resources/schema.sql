@@ -13,10 +13,10 @@ CREATE TABLE chatrooms (
 
 CREATE TABLE messages (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    author_id BIGINT NOT NULL REFERENCES users(id),
-    room_id BIGINT NOT NULL REFERENCES chatrooms(id),
-    text TEXT NOT NULL,
-    date_time TIMESTAMP NOT NULL
+    author_id BIGINT REFERENCES users(id),
+    room_id BIGINT REFERENCES chatrooms(id),
+    text TEXT,
+    date_time TIMESTAMP
 );
 
 CREATE TABLE users_chatrooms (

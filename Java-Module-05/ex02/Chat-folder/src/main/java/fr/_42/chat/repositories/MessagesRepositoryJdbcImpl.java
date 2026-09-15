@@ -23,64 +23,79 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
                 m.id AS message_id,
                 m.text AS message_text,
                 m.date_time AS message_date_time,
-
+    
                 u.id AS author_id,
                 u.login AS author_login,
                 u.password AS author_password,
-
+    
                 c.id AS room_id,
                 c.name AS room_name
-
+    
             FROM messages m
-            JOIN users u
+            LEFT JOIN users u
                 ON m.author_id = u.id
-            JOIN chatrooms c
+            LEFT JOIN chatrooms c
                 ON m.room_id = c.id
             WHERE m.id = ?
         """;
 
         try (Connection connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement(sql)) {
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
             statement.setLong(1, id);
-
             try (ResultSet result = statement.executeQuery()) {
-                if (!result.next()) { return Optional.empty(); }
+                if (!result.next()) {
+                    return Optional.empty();
+                }
 
-                User author = new User(
-                        result.getLong("author_id"),
-                        result.getString("author_login"),
-                        result.getString("author_password"),
-                        null,
-                        null
-                );
+                Long authorId = result.getObject("author_id", Long.class);
+                User author = null;
+                if (authorId != null) {
+                    author = new User(
+                            authorId,
+                            result.getString("author_login"),
+                            result.getString("author_password"),
+                            null,
+                            null
+                    );
+                }
 
-                Chatroom room = new Chatroom(
-                        result.getLong("room_id"),
-                        result.getString("room_name"),
-                        null,
-                        null
-                );
+                Long roomId = result.getObject("room_id", Long.class);
+                Chatroom room = null;
+                if (roomId != null) {
+                    room = new Chatroom(
+                            roomId,
+                            result.getString("room_name"),
+                            null,
+                            null
+                    );
+                }
 
+                Timestamp timestamp = result.getTimestamp("message_date_time");
                 Message message = new Message(
                         result.getLong("message_id"),
                         author,
                         room,
                         result.getString("message_text"),
-                        result.getTimestamp("message_date_time").toLocalDateTime()
+                        timestamp == null ? null : timestamp.toLocalDateTime()
                 );
 
                 return Optional.of(message);
             }
-
         } catch (SQLException e) {
-            e.printStackTrace();
-            return Optional.empty();
+            throw new RuntimeException(
+                    "Failed getting message with id " + id,
+                    e
+            );
         }
     }
 
+
     @Override
     public void save(Message message) {
-        if (message.getAuthor() == null
+        if (message == null) {
+            throw new IllegalArgumentException("Message can't be null");
+        } if (message.getAuthor() == null
                 || message.getAuthor().getId() == null
                 || message.getRoom() == null
                 || message.getRoom().getId() == null) {
@@ -89,28 +104,6 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
 
         String checkAuthorSql = "SELECT id FROM users WHERE id = ?";
         String checkRoomSql = "SELECT id FROM chatrooms WHERE id = ?";
-        try (Connection connection = dataSource.getConnection();
-            PreparedStatement checkAuthorStmt = connection.prepareStatement(checkAuthorSql);
-            PreparedStatement checkRoomStmt = connection.prepareStatement(checkRoomSql)) {
-
-            checkAuthorStmt.setLong(1, message.getAuthor().getId());
-            try (ResultSet authorResult = checkAuthorStmt.executeQuery()) {
-                if (!authorResult.next()) {
-                    throw new NotSavedSubEntityException("Author does not exist in database");
-                }
-            }
-
-            checkRoomStmt.setLong(1, message.getRoom().getId());
-            try (ResultSet roomResult = checkRoomStmt.executeQuery()) {
-                if (!roomResult.next()) {
-                    throw new NotSavedSubEntityException("Chatroom does not exist in database");
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return;
-        }
-
         String saveSql = """
             INSERT INTO messages (
                 author_id,
@@ -120,29 +113,96 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
             )
             VALUES (?, ?, ?, ?)
         """;
-        System.out.println();
-        try (Connection connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement(saveSql, Statement.RETURN_GENERATED_KEYS)) {
-            statement.setLong(1, message.getAuthor().getId());
-            statement.setLong(2, message.getRoom().getId());
-            statement.setString(3, message.getText());
-            statement.setTimestamp(4, java.sql.Timestamp.valueOf(message.getTrueDateTime()));
 
-            statement.executeUpdate();
-            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    Long id = generatedKeys.getLong(1);
-                    message.setId(id);
+        try (Connection connection = dataSource.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement(checkAuthorSql)) {
+                statement.setLong(
+                        1,
+                        message.getAuthor().getId()
+                );
+
+                try (ResultSet result = statement.executeQuery()) {
+                    if (!result.next()) {
+                        throw new NotSavedSubEntityException(
+                                "Author does not exist in database"
+                        );
+                    }
                 }
             }
+
+            try (PreparedStatement statement = connection.prepareStatement(checkRoomSql)) {
+                statement.setLong(
+                        1,
+                        message.getRoom().getId()
+                );
+
+                try (ResultSet result = statement.executeQuery()) {
+                    if (!result.next()) {
+                        throw new NotSavedSubEntityException(
+                                "Chatroom does not exist in database"
+                        );
+                    }
+                }
+            }
+
+            try (PreparedStatement statement = connection.prepareStatement(
+                    saveSql,
+                    Statement.RETURN_GENERATED_KEYS
+            )) {
+                statement.setLong(
+                        1,
+                        message.getAuthor().getId()
+                );
+
+                statement.setLong(
+                        2,
+                        message.getRoom().getId()
+                );
+
+                statement.setString(
+                        3,
+                        message.getText()
+                );
+
+                if (message.getTrueDateTime() == null) {
+                    statement.setNull(
+                            4,
+                            Types.TIMESTAMP
+                    );
+                } else {
+                    statement.setTimestamp(
+                            4,
+                            Timestamp.valueOf(
+                                    message.getTrueDateTime()
+                            )
+                    );
+                }
+
+                int affectedRows = statement.executeUpdate();
+                if (affectedRows != 1) {
+                    throw new RuntimeException(
+                            "Failed to save message"
+                    );
+                }
+
+                try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+                    if (!generatedKeys.next()) {
+                        throw new RuntimeException(
+                                "Database did not return generated message ID"
+                        );
+                    }
+
+                    message.setId(
+                            generatedKeys.getLong(1)
+                    );
+                }
+            }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new RuntimeException(
+                    "Database error while saving message",
+                    e
+            );
         }
     }
 }
-
-
-
-
-
-

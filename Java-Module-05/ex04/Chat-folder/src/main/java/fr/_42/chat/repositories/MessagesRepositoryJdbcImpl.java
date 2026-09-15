@@ -1,7 +1,7 @@
 package fr._42.chat.repositories;
 
-import java.sql.*;
 import java.util.Optional;
+import java.sql.*;
 
 import javax.sql.DataSource;
 
@@ -246,7 +246,7 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
             } else {
                 statement.setTimestamp(
                         4,
-                        java.sql.Timestamp.valueOf(message.getTrueDateTime())
+                        Timestamp.valueOf(message.getTrueDateTime())
                 );
             }
 

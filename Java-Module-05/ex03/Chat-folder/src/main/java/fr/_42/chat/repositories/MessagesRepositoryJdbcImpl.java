@@ -246,7 +246,7 @@ public class MessagesRepositoryJdbcImpl implements MessagesRepository {
             } else {
                 statement.setTimestamp(
                         4,
-                        java.sql.Timestamp.valueOf(message.getTrueDateTime())
+                        Timestamp.valueOf(message.getTrueDateTime())
                 );
             }
 
