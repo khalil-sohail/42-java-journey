@@ -1,6 +1,7 @@
 .vscode/
 .github/
 .idea/
+target/
 
 # Compiled class file
 *.class
