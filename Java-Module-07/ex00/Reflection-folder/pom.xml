@@ -6,8 +6,8 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>fr._42.numbers</groupId>
-    <artifactId>numbers</artifactId>
+    <groupId>fr._42.reflection</groupId>
+    <artifactId>reflection</artifactId>
     <version>1.13.37</version>
 
     <properties>
