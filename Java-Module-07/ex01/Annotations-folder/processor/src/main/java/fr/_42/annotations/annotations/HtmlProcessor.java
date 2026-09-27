@@ -16,7 +16,6 @@ import java.io.Writer;
 import java.util.Set;
 
 @SupportedAnnotationTypes({"fr._42.annotations.annotations.HtmlForm"})
-@AutoService(Processor.class)
 public class HtmlProcessor extends AbstractProcessor {
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
