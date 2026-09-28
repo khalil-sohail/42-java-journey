@@ -53,7 +53,7 @@ public class Main {
             System.out.println(nullUser.getFirstName() == null);
 
             System.out.println("\n=== SAVE PRODUCT ===");
-            Product product = new Product("ThinkPad P1", 17999.99);
+            Product product = new Product("ThinkPad P1", "lenovo", 17999.99);
 
             System.out.println("Before save: " + product);
             orm.save(product);
@@ -62,11 +62,11 @@ public class Main {
 
             System.out.println("\n=== FIND PRODUCT ===");
             Product foundProduct = orm.findById(product.getId(), Product.class);
-            System.out.println("Found: " + foundProduct);
-
+            System.out.println("Found: " + foundProduct + ", brand: " + foundProduct.getBrandName());
 
             System.out.println("\n=== UPDATE PRODUCT ===");
             foundProduct.setProductName("ThinkPad P1 Gen 6");
+            foundProduct.setBrandName("Lenovo ThinkPad");
             foundProduct.setPrice(2199.99);
 
             orm.update(foundProduct);
