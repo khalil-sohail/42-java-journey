@@ -1,8 +1,12 @@
-package fr._42.spring.service.repositories;
+package _42.spring.service.repositories;
 
-import fr._42.spring.service.models.User;
+import _42.spring.service.models.User;
 
 import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,17 +16,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Component("usersRepositoryJdbc")
 public class UsersRepositoryJdbcImpl implements UsersRepository {
     private final DataSource dataSource;
 
-    public UsersRepositoryJdbcImpl(DataSource dataSource) {
+    @Autowired
+    public UsersRepositoryJdbcImpl(@Qualifier("driverManagerDataSource") DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
     private User mapUser(ResultSet resultSet) throws SQLException {
         return new User(
             resultSet.getLong("id"),
-            resultSet.getString("email")
+            resultSet.getString("email"),
+            resultSet.getString("password")
         );
     }
 
@@ -31,8 +38,9 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
         String sql = """
             SELECT
                 id,
-                email
-            FROM users_ex01
+                email,
+                password
+            FROM users_ex02
             WHERE id = ?
         """;
 
@@ -62,7 +70,7 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
         try (
             Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(
-                "SELECT id, email FROM users_ex01"
+                "SELECT id, email, password FROM users_ex02"
             );
             ResultSet resultSet = statement.executeQuery()
         ) {
@@ -79,14 +87,15 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
     @Override
     public void save(User entity) {
         String sql = """
-            INSERT INTO users_ex01 (email)
-            VALUES (?)
+            INSERT INTO users_ex02 (email, password)
+            VALUES (?, ?)
         """;
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
 
             statement.setString(1, entity.getEmail());
+            statement.setString(2, entity.getPassword());
             statement.executeUpdate();
 
             try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
@@ -107,8 +116,8 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
     @Override
     public void update(User entity) {
         String sql = """
-            UPDATE users_ex01
-            SET email = ?
+            UPDATE users_ex02
+            SET email = ?, password = ?
             WHERE id = ?
         """;
 
@@ -116,9 +125,10 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setString(1, entity.getEmail());
-            statement.setLong(2, entity.getIdentifier());
-            int affectedRows = statement.executeUpdate();
+            statement.setString(2, entity.getPassword());
+            statement.setLong(3, entity.getIdentifier());
             
+            int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 throw new SQLException("Updating user failed, no rows affected.");
             }
@@ -133,7 +143,7 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
     @Override
     public void delete(Long id) {
         String sql = """
-            DELETE FROM users_ex01
+            DELETE FROM users_ex02
             WHERE id = ?
         """;
 
@@ -159,8 +169,9 @@ public class UsersRepositoryJdbcImpl implements UsersRepository {
         String sql = """
             SELECT
                 id,
-                email
-            FROM users_ex01
+                email,
+                password
+            FROM users_ex02
             WHERE email = ?
         """;
 
