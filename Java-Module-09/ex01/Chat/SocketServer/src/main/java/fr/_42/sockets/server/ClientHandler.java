@@ -2,7 +2,9 @@ package fr._42.sockets.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,25 +16,40 @@ import fr._42.sockets.services.UsersService;
 
 @Component
 public class ClientHandler {
-    private final MessagesService messagesService;
-    private final UsersService usersService;
+    private final MessagesService   messagesService;
+    private final ClientRegistry    clientRegistry;
+    private final UsersService      usersService;
 
     @Autowired
-    public ClientHandler(MessagesService messagesService, UsersService usersService) {
+    public ClientHandler(MessagesService messagesService, ClientRegistry clientRegistry, UsersService usersService) {
         this.messagesService = messagesService;
+        this.clientRegistry = clientRegistry;
         this.usersService = usersService;
     }
+
+    public void handleClient(Socket socket) {
+        try (
+            socket;
+            BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            PrintWriter output = new PrintWriter(
+                socket.getOutputStream(),
+                true
+            )
+        ) {
+            handleProtocol(input, output);
+        } catch (IOException e) {
+            System.err.println("Client disconnected: " + e.getMessage());
+        }
+    }
     
-    public void handleClient(
+    public void handleProtocol(
         BufferedReader input,
         PrintWriter output
     ) throws IOException {
         output.println("Hello from Server!");
         String command = input.readLine();
 
-        if (command == null) {
-            return;
-        } else if ("signUp".equals(command)) {
+        if ("signUp".equals(command)) {
             signUp(input, output);
         } else if ("signIn".equals(command)) {
             Optional<User> user = signIn(input, output);
@@ -41,6 +58,8 @@ public class ClientHandler {
             }
 
             handleMessaging(user.get(), input, output);
+        } else {
+            output.println("Unknown command: " + command);
         }
     }
 
@@ -50,16 +69,23 @@ public class ClientHandler {
         PrintWriter output
     ) throws IOException {
         output.println("Start messaging");
+        ClientSession session = new ClientSession(output, user);
+        clientRegistry.add(session);
         
-        String text;
-        while ((text = input.readLine()) != null) {
-            if ("Exit".equals(text)) {
-                output.println("You have left the chat.");
-                return;
-            }
+        try {
+            String text;
 
-            messagesService.sendMessage(user, text);
-            // broadcast(user.getUsername() + ": " + text);
+            while ((text = input.readLine()) != null) {
+                if ("Exit".equals(text)) {
+                    output.println("You have left the chat.");
+                    return;
+                }
+                
+                messagesService.sendMessage(user, text);
+                clientRegistry.broadcast(user.getUsername() + ": " + text);
+            }
+        } finally {
+            clientRegistry.remove(session);
         }
     }
 
@@ -69,7 +95,8 @@ public class ClientHandler {
         output.println("Enter password:");
         String password = input.readLine();
 
-        if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+        if (username == null || password == null || username.isBlank() || password.isBlank()) {
+            output.println("Invalid credentials.");
             return;
         }
 
@@ -87,7 +114,8 @@ public class ClientHandler {
         output.println("Enter password:");
         String password = input.readLine();
 
-        if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+        if (username == null || password == null || username.isBlank() || password.isBlank()) {
+            output.println("Invalid credentials.");
             return Optional.empty();
         }
 
