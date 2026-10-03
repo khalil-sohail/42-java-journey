@@ -4,12 +4,12 @@ import fr._42.sockets.repositories.RoomsRepository;
 import fr._42.sockets.models.User;
 import fr._42.sockets.models.Room;
 
-import java.util.Optional;
-import java.util.List;
-
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
+import java.util.List;
 
 @Component
 public class RoomsServiceImpl implements RoomsService {
@@ -21,14 +21,12 @@ public class RoomsServiceImpl implements RoomsService {
     }
     
     @Override
-    // @Transactional
     public Room createRoom(User user, String name) {
         if (name == null || name.isBlank()) {
             throw new IllegalArgumentException("Room name cannot be empty.");
         }
 
         Room room = new Room(null, name);
-        
         room = roomRepository.save(room);
         return room;
     }

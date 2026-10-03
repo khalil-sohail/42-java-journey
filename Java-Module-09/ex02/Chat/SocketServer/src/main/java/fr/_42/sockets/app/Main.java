@@ -5,8 +5,8 @@ import fr._42.sockets.server.Server;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
+import com.beust.jcommander.JCommander;
 
 public class Main {
     public static void main(String[] args) {

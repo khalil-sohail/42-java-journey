@@ -1,13 +1,13 @@
 package fr._42.sockets.app;
 
+import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Client {
-    public void start(int port) {
+    public static void start(int port) {
         try (
             Socket          socket       = new Socket("localhost", port);
             BufferedReader  serverInput  = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -23,11 +23,7 @@ public class Client {
         }
     }
 
-    private static boolean authenticate(
-        BufferedReader serverInput,
-        PrintWriter serverOutput,
-        BufferedReader consoleInput
-    ) throws IOException {
+    private static boolean authenticate(BufferedReader serverInput, PrintWriter serverOutput, BufferedReader consoleInput) throws IOException {
         String message;
 
         while ((message = serverInput.readLine()) != null) {
@@ -51,11 +47,7 @@ public class Client {
         return false;
     }
 
-    private static void startMessaging(
-        BufferedReader serverInput,
-        PrintWriter serverOutput,
-        BufferedReader consoleInput
-    ) throws IOException {
+    private static void startMessaging(BufferedReader serverInput, PrintWriter serverOutput, BufferedReader consoleInput) throws IOException {
         Thread.startVirtualThread(() -> {
             try {
                 sendMessages(consoleInput, serverOutput);
@@ -69,9 +61,7 @@ public class Client {
         receiveMessages(serverInput);
     }
 
-    private static void receiveMessages(
-        BufferedReader serverInput
-    ) throws IOException {
+    private static void receiveMessages(BufferedReader serverInput) throws IOException {
         String message;
 
         while ((message = serverInput.readLine()) != null) {
@@ -79,10 +69,7 @@ public class Client {
         }
     }
 
-    private static void sendMessages(
-        BufferedReader consoleInput,
-        PrintWriter serverOutput
-    ) throws IOException {
+    private static void sendMessages(BufferedReader consoleInput, PrintWriter serverOutput) throws IOException {
         String text;
 
         while ((text = consoleInput.readLine()) != null) {

@@ -5,13 +5,13 @@ import fr._42.sockets.models.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import org.springframework.jdbc.core.RowMapper;
+
+import javax.sql.DataSource;
 
 import java.util.Optional;
 import java.util.List;
-
-import javax.sql.DataSource;
 
 @Component
 public class RoomsRepositoryImpl implements RoomsRepository {

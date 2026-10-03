@@ -1,8 +1,8 @@
 package fr._42.sockets.repositories;
 
-import java.util.List;
-
 import fr._42.sockets.models.Message;
+
+import java.util.List;
 
 public interface MessagesRepository {
     void save(Message message);

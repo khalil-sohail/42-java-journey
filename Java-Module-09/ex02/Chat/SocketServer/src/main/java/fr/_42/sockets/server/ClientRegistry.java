@@ -1,6 +1,6 @@
 package fr._42.sockets.server;
 
-import fr._42.sockets.server.Connection.enums.MessageType;
+import fr._42.sockets.server.Connection.protocols.MessageType;
 import fr._42.sockets.models.Room;
 
 import org.springframework.stereotype.Component;

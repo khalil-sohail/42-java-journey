@@ -1,7 +1,7 @@
 package fr._42.sockets.app;
 
-import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
+import com.beust.jcommander.Parameter;
 
 @Parameters(separators = "=")
 public class Args {

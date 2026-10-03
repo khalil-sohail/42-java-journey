@@ -1,4 +1,4 @@
-package fr._42.sockets.server.Connection.enums;
+package fr._42.sockets.server.Connection.protocols;
 
 public enum MessageType {
     HELLO,
@@ -19,6 +19,7 @@ public enum MessageType {
     HISTORY,
     CHAT_MESSAGE,
 
+    BACK,
     EXIT_ROOM,
     EXIT,
 

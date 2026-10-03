@@ -19,7 +19,7 @@ public class MessagesRepositoryImpl implements MessagesRepository {
     private final RowMapper<Message> rowMapper = (rs, rowNum) -> {
         User sender = new User(
             rs.getLong("sender_id"),
-            null, //rs.getLong("sender_last_room_id"),
+            null,
             rs.getString("sender_username"),
             null
         );

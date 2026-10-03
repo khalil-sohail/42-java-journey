@@ -1,7 +1,7 @@
-package fr._42.sockets.server.Connection;
+package fr._42.sockets.connection;
 
-import fr._42.sockets.server.Connection.protocols.ProtocolMessage;
-import fr._42.sockets.server.Connection.protocols.MessageType;
+import fr._42.sockets.protocols.ProtocolMessage;
+import fr._42.sockets.protocols.MessageType;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

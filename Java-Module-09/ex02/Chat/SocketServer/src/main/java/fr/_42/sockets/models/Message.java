@@ -27,11 +27,12 @@ public class Message {
     public void setSender(User sender)                      { this.sender = sender; }
     public void setText(String text)                        { this.text = text; }
     public void setRoom(Room room)                          { this.Room = room; }
-    public LocalDateTime getSendingTime()                   { return sendingTime; }
-    public Long getIdentifier()                             { return identifier; }
-    public User getSender()                                 { return sender; }
-    public String getText()                                 { return text; }
-    public Room getRoom()                                   { return Room; }
+
+    public LocalDateTime    getSendingTime()                { return sendingTime; }
+    public Long             getIdentifier()                 { return identifier; }
+    public User             getSender()                     { return sender; }
+    public String           getText()                       { return text; }
+    public Room             getRoom()                       { return Room; }
 
     @Override
     public String toString() {

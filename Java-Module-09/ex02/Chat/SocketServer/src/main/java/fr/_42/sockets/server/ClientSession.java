@@ -1,7 +1,7 @@
 package fr._42.sockets.server;
 
-import fr._42.sockets.server.Connection.enums.MessageType;
 import fr._42.sockets.server.Connection.JsonConnection;
+import fr._42.sockets.server.Connection.protocols.MessageType;
 import fr._42.sockets.models.User;
 import fr._42.sockets.models.Room;
 
@@ -10,13 +10,13 @@ import java.io.IOException;
 
 public class ClientSession {
     private final       JsonConnection  jsonConnection;
+    private volatile    Room            currentRoom;
     private final       User            user;
-    private volatile    Room            currentRoom; // Use volatile to ensure visibility across threads
 
     public ClientSession(JsonConnection jsonConnection, User user) {
         this.jsonConnection = jsonConnection;
-        this.user = user;
         this.currentRoom = null;
+        this.user = user;
     }
 
     public JsonConnection   getJsonConnection() { return jsonConnection; }

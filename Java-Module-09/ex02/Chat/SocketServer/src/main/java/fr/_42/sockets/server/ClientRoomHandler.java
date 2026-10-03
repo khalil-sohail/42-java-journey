@@ -1,18 +1,19 @@
 package fr._42.sockets.server;
 
-import fr._42.sockets.server.Connection.enums.*;
+import fr._42.sockets.server.Connection.JsonConnection;
+import fr._42.sockets.server.Connection.protocols.*;
 import fr._42.sockets.services.MessagesService;
 import fr._42.sockets.services.RoomsService;
 import fr._42.sockets.models.Message;
 import fr._42.sockets.models.Room;
-import fr._42.sockets.server.Connection.JsonConnection;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.util.Optional;
 import java.util.List;
+
+import java.io.IOException;
 
 @Component
 public class ClientRoomHandler {
@@ -185,7 +186,7 @@ public class ClientRoomHandler {
         ProtocolMessage request = connection.receive();
         if (request == null) {
             return;
-        } if (request.type() == MessageType.EXIT) {
+        } if (request.type() == MessageType.BACK) {
             return;
         } if (request.type() != MessageType.CHOOSE_ROOM) {
             connection.send(
@@ -208,6 +209,7 @@ public class ClientRoomHandler {
     private void handleMessaging(ClientSession session) throws IOException {
         ProtocolMessage request;
         JsonConnection connection = session.getJsonConnection();
+
         while ((request = connection.receive()) != null) {
             switch (request.type()) {
                 case EXIT_ROOM -> {

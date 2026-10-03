@@ -12,7 +12,7 @@ import javax.sql.DataSource;
 public class MessagesRepositoryImpl implements MessagesRepository {
     private final JdbcTemplate jdbcTemplate;
 
-    @Autowired 
+    @Autowired
     public MessagesRepositoryImpl(DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }

@@ -19,6 +19,7 @@ public class Message {
     public void setIdentifier(Long identifier)              { this.identifier = identifier; }
     public void setSender(User sender)                      { this.sender = sender; }
     public void setText(String text)                        { this.text = text; }
+
     public LocalDateTime getSendingTime()                   { return sendingTime; }
     public Long getIdentifier()                             { return identifier; }
     public User getSender()                                 { return sender; }

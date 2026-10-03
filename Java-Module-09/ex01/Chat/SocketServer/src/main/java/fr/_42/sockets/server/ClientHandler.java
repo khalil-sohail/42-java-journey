@@ -1,18 +1,18 @@
 package fr._42.sockets.server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
-import java.util.Optional;
+import fr._42.sockets.services.MessagesService;
+import fr._42.sockets.services.UsersService;
+import fr._42.sockets.models.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import fr._42.sockets.models.User;
-import fr._42.sockets.services.MessagesService;
-import fr._42.sockets.services.UsersService;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
+import java.io.PrintWriter;
+import java.io.IOException;
+import java.util.Optional;
+import java.net.Socket;
 
 @Component
 public class ClientHandler {
@@ -31,10 +31,7 @@ public class ClientHandler {
         try (
             socket;
             BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter output = new PrintWriter(
-                socket.getOutputStream(),
-                true
-            )
+            PrintWriter output = new PrintWriter(socket.getOutputStream(), true)
         ) {
             handleProtocol(input, output);
         } catch (IOException e) {
@@ -42,10 +39,7 @@ public class ClientHandler {
         }
     }
     
-    public void handleProtocol(
-        BufferedReader input,
-        PrintWriter output
-    ) throws IOException {
+    public void handleProtocol(BufferedReader input, PrintWriter output) throws IOException {
         output.println("Hello from Server!");
         String command = input.readLine();
 
@@ -63,15 +57,11 @@ public class ClientHandler {
         }
     }
 
-    private void handleMessaging(
-        User user,
-        BufferedReader input,
-        PrintWriter output
-    ) throws IOException {
+    private void handleMessaging(User user, BufferedReader input, PrintWriter output) throws IOException {
         output.println("Start messaging");
+        
         ClientSession session = new ClientSession(output, user);
         clientRegistry.add(session);
-        
         try {
             String text;
 

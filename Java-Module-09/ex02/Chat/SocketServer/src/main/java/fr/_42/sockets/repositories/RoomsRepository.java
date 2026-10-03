@@ -1,10 +1,10 @@
 package fr._42.sockets.repositories;
 
-import java.util.List;
-import java.util.Optional;
-
 import fr._42.sockets.models.Room;
 import fr._42.sockets.models.User;
+
+import java.util.Optional;
+import java.util.List;
 
 public interface RoomsRepository {
     Room            save(Room room);

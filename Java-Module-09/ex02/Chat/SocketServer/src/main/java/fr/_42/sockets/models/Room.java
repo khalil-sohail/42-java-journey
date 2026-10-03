@@ -11,6 +11,7 @@ public class Room {
 
     public void         setIdentifier(Long identifier)  { this.identifier = identifier; }
     public void         setName(String name)            { this.name = name; }
+
     public Long         getIdentifier()                 { return identifier; }
     public String       getName()                       { return name; }
 

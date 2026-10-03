@@ -1,4 +1,4 @@
-package fr._42.sockets.server.Connection.enums;
+package fr._42.sockets.protocols;
 
 import java.util.List;
 

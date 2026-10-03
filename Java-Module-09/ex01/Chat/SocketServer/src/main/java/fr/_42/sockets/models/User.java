@@ -5,7 +5,6 @@ public class User {
     private String  username;
     private String  password;
 
-
     public User(Long identifier, String username, String password) {
         this.identifier = identifier;
         this.username = username;
@@ -15,6 +14,7 @@ public class User {
     public void     setIdentifier(Long identifier)  { this.identifier = identifier; }
     public void     setPassword(String password)    { this.password = password; }
     public void     setUsername(String username)    { this.username = username; }
+
     public Long     getIdentifier()                 { return identifier; }
     public String   getPassword()                   { return password; }
     public String   getUsername()                   { return username; }

@@ -1,9 +1,9 @@
 package fr._42.sockets.server;
 
+import fr._42.sockets.server.Connection.JsonConnection;
+import fr._42.sockets.server.Connection.protocols.*;
 import fr._42.sockets.services.UsersService;
 import fr._42.sockets.models.User;
-import fr._42.sockets.server.Connection.JsonConnection;
-import fr._42.sockets.server.Connection.enums.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,6 +12,7 @@ import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import java.util.Optional;
 import java.net.Socket;
 

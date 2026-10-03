@@ -1,7 +1,7 @@
 package fr._42.sockets.app;
 
-import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
+import com.beust.jcommander.JCommander;
 
 public class Main {
     public static void main(String[] args) {
@@ -20,8 +20,7 @@ public class Main {
             return;
         }
 
-        Client client = new Client();
-        client.start(arguments.getPort());
+        Client.start(arguments.getPort());
     }
 }
 

@@ -2,11 +2,13 @@ package fr._42.sockets.server;
 
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import java.net.ServerSocket;
+import java.net.Socket;
+
+import java.io.IOException;
 
 @Component
 public class Server {
